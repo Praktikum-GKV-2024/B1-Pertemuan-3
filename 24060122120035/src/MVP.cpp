@@ -30,7 +30,8 @@ class MainScene : engine::Scene {
 public:
     GLFWwindow* window;
     engine::Object *cube_1, *cube_2, *cube_3, *plane;
-    CAMERA_MODE camera_mode = CAMERA_MODE::DEFAULT_ORTHOGRAPHIC;       
+    CAMERA_MODE camera_mode = CAMERA_MODE::DEFAULT_ORTHOGRAPHIC;   
+  
 
     MainScene (GLFWwindow* window): Scene(window) {
         this->window = window;
@@ -52,7 +53,7 @@ public:
 
         // Associate the object instance with the GLFW window
         glfwSetWindowUserPointer(window, this);
-
+ 
         start();
     }
 
@@ -71,6 +72,9 @@ public:
 
         // TRANSFORM THE CUBE
         // TODO 1: PINDAHKAN CUBE INI KE TRACE 1 PERSEGI DI PLANE
+        cube_1->transform = glm::translate(cube_1->transform, vec3( 30, 1, 50));
+        cube_1->transform = glm::rotate(cube_1->transform, glm::radians(0.f), vec3( 0, 1, 0));
+        cube_1->transform = glm::scale(cube_1->transform, vec3( 10, 10, 10));  
 
         // LOAD CUBE SHADERS AND MODEL II
         shader = LoadShaders("res/shader/Textured.vs", "res/shader/Textured.fs");
@@ -78,14 +82,19 @@ public:
 
         // TRANSFORM THE CUBE
         // TODO 2: PINDAHKAN CUBE INI KE TRACE 2 PERSEGI DI PLANE
+        cube_2->transform = glm::translate(cube_2->transform, vec3( -40, 1, 30));
+        cube_2->transform = glm::rotate(cube_2->transform, glm::radians(90.f), vec3( 0, 1, 0));
+        cube_2->transform = glm::scale(cube_2->transform, vec3( 10, 10, 20)); 
 
         // LOAD CUBE SHADERS AND MODEL III
         shader = LoadShaders("res/shader/Textured.vs", "res/shader/Textured.fs");
         cube_3 = new engine::Object("../res/obj/box.obj", "../res/bmp/box.bmp", shader, this);
 
         // TRANSFORM THE CUBE
-        // TODO 3: PINDAHKAN CUBE INI KE TRACE 2 PERSEGI DI PLANE
-
+        // TODO 3: PINDAHKAN CUBE INI KE TRACE 3 PERSEGI DI PLANE
+        cube_3->transform = glm::translate(cube_3->transform, vec3( 40, 1, -20));
+        cube_3->transform = glm::rotate(cube_3->transform, glm::radians(-45.f), vec3( 0, 1, 0));
+        cube_3->transform = glm::scale(cube_3->transform, vec3( 10, 10, 20));  
         // binding keys
         glfwSetKeyCallback(window, keyCallbackStatic);
     }
@@ -115,18 +124,30 @@ public:
                 break;
             case CAMERA_MODE::PROJECTION_1:
                 // TODO 4: CREATE PROJECTION FOR PROJECTION_1 (See module)
-                ViewMatrix; // edit this
-                ProjectionMatrix; // edit this
-                break;  
+                ViewMatrix = glm::lookAt(
+                    vec3(60, 70, 20),
+                    vec3(30, 0, 50),
+                    up
+                );
+                ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
+                break;
             case CAMERA_MODE::PROJECTION_2:
                 // TODO 5: CREATE PROJECTION FOR PROJECTION_2 (See module)
-                ViewMatrix; // edit this
-                ProjectionMatrix; // edit this
+                ViewMatrix = glm::lookAt(
+                    vec3(-40, 70, 70),
+                    vec3(-40, 1, 30),
+                    up
+                );
+                ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
                 break;
             case CAMERA_MODE::PROJECTION_3:
                 // TODO 6: CREATE PROJECTION FOR PROJECTION_3 (See module)
-                ViewMatrix; // edit this
-                ProjectionMatrix; // edit this
+                ViewMatrix = glm::lookAt(
+                    vec3(80, 75, -60),
+                    vec3(40, 0, -20),
+                    up
+                );
+                ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
                 break;
             case CAMERA_MODE::FREE_VIEW:
                 // Don't touch
