@@ -31,7 +31,6 @@ public:
     GLFWwindow* window;
     engine::Object *cube_1, *cube_2, *cube_3, *plane;
     CAMERA_MODE camera_mode = CAMERA_MODE::DEFAULT_ORTHOGRAPHIC;   
-  
 
     MainScene (GLFWwindow* window): Scene(window) {
         this->window = window;
