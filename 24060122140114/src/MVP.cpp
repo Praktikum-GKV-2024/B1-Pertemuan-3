@@ -2,12 +2,12 @@
 
 #include <GLFW/glfw3.h>
 
-#include <glm/vec3.hpp> // glm::vec3
-#include <glm/vec4.hpp> // glm::vec4
-#include <glm/mat4x4.hpp> // glm::mat4
-#include <glm/ext/matrix_transform.hpp> // glm::translate, glm::rotate, glm::scale
+#include <glm/vec3.hpp>                  // glm::vec3
+#include <glm/vec4.hpp>                  // glm::vec4
+#include <glm/mat4x4.hpp>                // glm::mat4
+#include <glm/ext/matrix_transform.hpp>  // glm::translate, glm::rotate, glm::scale
 #include <glm/ext/matrix_clip_space.hpp> // glm::perspective
-#include <glm/ext/scalar_constants.hpp> // glm::pi
+#include <glm/ext/scalar_constants.hpp>  // glm::pi
 #include <iostream>
 #include <cmath>
 #include <vector>
@@ -17,7 +17,8 @@
 #include <engine/scene.hpp>
 #include <engine/object.hpp>
 
-enum class CAMERA_MODE{
+enum class CAMERA_MODE
+{
     DEFAULT_PROJECTION,
     DEFAULT_ORTHOGRAPHIC,
     FREE_VIEW,
@@ -26,13 +27,15 @@ enum class CAMERA_MODE{
     PROJECTION_3
 };
 
-class MainScene : engine::Scene {
+class MainScene : engine::Scene
+{
 public:
-    GLFWwindow* window;
+    GLFWwindow *window;
     engine::Object *cube_1, *cube_2, *cube_3, *plane;
-    CAMERA_MODE camera_mode = CAMERA_MODE::DEFAULT_ORTHOGRAPHIC;       
+    CAMERA_MODE camera_mode = CAMERA_MODE::DEFAULT_ORTHOGRAPHIC;
 
-    MainScene (GLFWwindow* window): Scene(window) {
+    MainScene(GLFWwindow *window) : Scene(window)
+    {
         this->window = window;
 
         glClearColor(1.f, 1.f, 0.4f, 1.f);
@@ -41,7 +44,7 @@ public:
         glEnable(GL_DEPTH_TEST);
 
         // Accept fragment if it is closer to the camera than the former one
-        glDepthFunc(GL_LEQUAL); 
+        glDepthFunc(GL_LEQUAL);
 
         // Cull triangles which normal is not towards the camera
         // glEnable(GL_CULL_FACE);
@@ -56,7 +59,8 @@ public:
         start();
     }
 
-    void start() override {
+    void start() override
+    {
         // ======================== PLANE ========================
 
         // LOAD PLANE SHADERS AND MODEL
@@ -71,6 +75,9 @@ public:
 
         // TRANSFORM THE CUBE
         // TODO 1: PINDAHKAN CUBE INI KE TRACE 1 PERSEGI DI PLANE
+        cube_1->transform = glm::translate(cube_1->transform, vec3(30, 5, 50));
+        cube_1->transform = glm::rotate(cube_1->transform, glm::radians(0.f), vec3(0, 1, 0));
+        cube_1->transform = glm::scale(cube_1->transform, vec3(10, 10, 10));
 
         // LOAD CUBE SHADERS AND MODEL II
         shader = LoadShaders("res/shader/Textured.vs", "res/shader/Textured.fs");
@@ -78,6 +85,9 @@ public:
 
         // TRANSFORM THE CUBE
         // TODO 2: PINDAHKAN CUBE INI KE TRACE 2 PERSEGI DI PLANE
+        cube_2->transform = glm::translate(cube_2->transform, vec3(-40, 10, 30));
+        cube_2->transform = glm::rotate(cube_2->transform, glm::radians(270.f), vec3(0, 1, 0));
+        cube_2->transform = glm::scale(cube_2->transform, vec3(10, 10, 20));
 
         // LOAD CUBE SHADERS AND MODEL III
         shader = LoadShaders("res/shader/Textured.vs", "res/shader/Textured.fs");
@@ -85,58 +95,69 @@ public:
 
         // TRANSFORM THE CUBE
         // TODO 3: PINDAHKAN CUBE INI KE TRACE 2 PERSEGI DI PLANE
+        cube_3->transform = glm::translate(cube_3->transform, vec3(40, 5, -20));
+        cube_3->transform = glm::rotate(cube_3->transform, glm::radians(135.f), vec3(0, 1, 0));
+        cube_3->transform = glm::scale(cube_3->transform, vec3(10, 5, 20));
 
         // binding keys
         glfwSetKeyCallback(window, keyCallbackStatic);
     }
 
-    void update() override {
+    void update() override
+    {
         Scene::update();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        auto up = vec3( 0, 1, 0);
-        auto aspect_ratio = (float)window_width/window_height;
-        switch (camera_mode) {
-            case CAMERA_MODE::DEFAULT_ORTHOGRAPHIC:
-                ViewMatrix = glm::lookAt(
-                    vec3(0, 200, 1),
-                    vec3(0, 0, 0),
-                    up
-                );
-                ProjectionMatrix = glm::ortho<float>(-80*aspect_ratio, 80*aspect_ratio, -80, 80, -1000, 1000);
-                break;
-            case CAMERA_MODE::DEFAULT_PROJECTION:
-                ViewMatrix = glm::lookAt(
-                    vec3(0, 200, 1),
-                    vec3(0, 0, 0),
-                    up
-                );
-                ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
-                break;
-            case CAMERA_MODE::PROJECTION_1:
-                // TODO 4: CREATE PROJECTION FOR PROJECTION_1 (See module)
-                ViewMatrix; // edit this
-                ProjectionMatrix; // edit this
-                break;  
-            case CAMERA_MODE::PROJECTION_2:
-                // TODO 5: CREATE PROJECTION FOR PROJECTION_2 (See module)
-                ViewMatrix; // edit this
-                ProjectionMatrix; // edit this
-                break;
-            case CAMERA_MODE::PROJECTION_3:
-                // TODO 6: CREATE PROJECTION FOR PROJECTION_3 (See module)
-                ViewMatrix; // edit this
-                ProjectionMatrix; // edit this
-                break;
-            case CAMERA_MODE::FREE_VIEW:
-                // Don't touch
-                computeMatricesFromInputs(window);
-                ViewMatrix = getViewMatrix();
-                ProjectionMatrix = getProjectionMatrix();
-                break;
+        auto up = vec3(0, 1, 0);
+        auto aspect_ratio = (float)window_width / window_height;
+        switch (camera_mode)
+        {
+        case CAMERA_MODE::DEFAULT_ORTHOGRAPHIC:
+            ViewMatrix = glm::lookAt(
+                vec3(0, 200, 1),
+                vec3(0, 0, 0),
+                up);
+            ProjectionMatrix = glm::ortho<float>(-80 * aspect_ratio, 80 * aspect_ratio, -80, 80, -1000, 1000);
+            break;
+        case CAMERA_MODE::DEFAULT_PROJECTION:
+            ViewMatrix = glm::lookAt(
+                vec3(0, 200, 1),
+                vec3(0, 0, 0),
+                up);
+            ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
+            break;
+        case CAMERA_MODE::PROJECTION_1:
+            // TODO 4: CREATE PROJECTION FOR PROJECTION_1 (See module)
+            ViewMatrix = glm::lookAt(
+                vec3(60, 100, 20),
+                vec3(20, 0, 60),
+                up);                                                                                     // edit this
+            ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f); // edit this
+            break;
+        case CAMERA_MODE::PROJECTION_2:
+            // TODO 5: CREATE PROJECTION FOR PROJECTION_2 (See module)
+            ViewMatrix = glm::lookAt(
+                vec3(-50, 70, 70),
+                vec3(-50, 0, 10),
+                up);                                                                                     // edit this
+            ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f); // edit this
+            break;
+        case CAMERA_MODE::PROJECTION_3:
+            // TODO 6: CREATE PROJECTION FOR PROJECTION_3 (See module)
+            ViewMatrix = glm::lookAt(
+                vec3(80, 100, -60),
+                vec3(20, 0, -20),
+                up);                                                                                     // edit this
+            ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f); // edit this
+            break;
+        case CAMERA_MODE::FREE_VIEW:
+            // Don't touch
+            computeMatricesFromInputs(window);
+            ViewMatrix = getViewMatrix();
+            ProjectionMatrix = getProjectionMatrix();
+            break;
         }
 
-        
         cube_1->render_with_projection();
         cube_2->render_with_projection();
         cube_3->render_with_projection();
@@ -144,10 +165,13 @@ public:
     }
 
 private:
-    void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-        if (action == GLFW_PRESS) {
+    void key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
+    {
+        if (action == GLFW_PRESS)
+        {
             std::cout << key << std::endl;
-            switch (key) {
+            switch (key)
+            {
             case GLFW_KEY_1:
                 camera_mode = CAMERA_MODE::DEFAULT_ORTHOGRAPHIC;
                 break;
@@ -170,10 +194,9 @@ private:
         }
     }
 
-    static void keyCallbackStatic(GLFWwindow* window, int key, int scancode, int action, int mods) {
-        MainScene* instance = static_cast<MainScene*>(glfwGetWindowUserPointer(window));
+    static void keyCallbackStatic(GLFWwindow *window, int key, int scancode, int action, int mods)
+    {
+        MainScene *instance = static_cast<MainScene *>(glfwGetWindowUserPointer(window));
         instance->key_callback(window, key, scancode, action, mods);
     }
-    
-
 };
