@@ -127,7 +127,7 @@ public:
                 // TODO 4: CREATE PROJECTION FOR PROJECTION_1 (See module)
                ViewMatrix = glm::lookAt(
                     vec3(55, 155, 20),
-                    vec3(30, 30, 50),
+                    vec3(27, 10, 50),
                     up
                 );
                 ProjectionMatrix = glm::perspective<float>(glm::radians(30.f), aspect_ratio, 1.0f, 1000.0f);
@@ -137,7 +137,7 @@ public:
                 // TODO 5: CREATE PROJECTION FOR PROJECTION_2 (See module)
                 ViewMatrix = glm::lookAt(
                     vec3(-40, 130, 75),
-                    vec3(-40, 30, 30),
+                    vec3(-40, 10, 30),
                     up
                 );
                 ProjectionMatrix = glm::perspective<float>(glm::radians(35.f), aspect_ratio, 0.1f, 500.0f);
