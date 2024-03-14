@@ -146,12 +146,12 @@ public:
             case CAMERA_MODE::PROJECTION_3:
                 // TODO 6: CREATE PROJECTION FOR PROJECTION_3 (See module)
                 ViewMatrix = glm::lookAt(
-                    // vec3(165, 250, -147),
-                    vec3(350, 500, -320),
-                    vec3(40, 30, -20),
+                    vec3(80, 100, -60),
+                    vec3(30, 0, -10),
                     up
+
                 );
-                ProjectionMatrix = glm::perspective<float>(glm::radians(8.5f), aspect_ratio, 0.1f, 1000.0f);
+                ProjectionMatrix = glm::perspective<float>(glm::radians(45.0f), aspect_ratio, 0.1f, 1000.0f);
                 break;  
 
             case CAMERA_MODE::FREE_VIEW:
