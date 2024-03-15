@@ -138,13 +138,13 @@ public:
                     vec3(-40, 0, 30),
                     up
                 );
-                ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
+                ProjectionMatrix = glm::perspective<float>(glm::radians(40.f), aspect_ratio, 0.1f, 1000.0f);
                 break;
             case CAMERA_MODE::PROJECTION_3:
                 // TODO 6: CREATE PROJECTION FOR PROJECTION_3 (See module)
                 ViewMatrix = glm::lookAt(
-                    vec3(60, 100, -40),
-                    vec3(40, 0, -20),
+                    vec3(80, 100, -60),
+                    vec3(20, 0, -20),
                     up
                 );
                 ProjectionMatrix = glm::perspective<float>(glm::radians(45.f), aspect_ratio, 0.1f, 1000.0f);
